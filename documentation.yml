@@ -1,0 +1,70 @@
+openapi: 3.0.0
+info:
+  title: Report Generation API
+  description: API to generate a custom report based on provided metrics.
+  version: 1.0.0
+paths:
+  /generate-report/:
+    post:
+      summary: Generate Report
+      description: Generates a custom CSV report based on the specified metrics.
+      operationId: generateReport
+      requestBody:
+        description: List of metrics to include in the report.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metrics:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - "Master-O ID"
+                    - "Content launch date"
+                    - "challenges"
+                    - "Completion Status"
+                    - "completion date"
+                    - "completed in days"
+                    - "Attempts"
+                    - "score"
+                    - "max score"
+                    - "time spent"
+      responses:
+        '200':
+          description: Report generated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Report generated."
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '400':
+          description: Invalid request (e.g., missing or incorrect metrics).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Metrics are required."
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Failed to generate report."
